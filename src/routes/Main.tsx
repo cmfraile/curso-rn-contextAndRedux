@@ -1,5 +1,9 @@
 import { Text } from "react-native";
 
-const Main = () => <Text>MainWorks</Text>
+const Main = () => {
+
+    return(<Text>MAIN WORKS</Text>)
+    
+}
 
 export default Main
