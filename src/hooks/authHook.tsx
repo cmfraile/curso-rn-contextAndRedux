@@ -29,7 +29,6 @@ const authHook = () => {
 
     const authInitialState:authState = {isLoggedIn:false,user:undefined};
     
-
     const [ authState , dispatch ] = useReducer(authReducer,authInitialState);
 
     const authCRUD = {

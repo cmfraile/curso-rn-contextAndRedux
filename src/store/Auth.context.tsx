@@ -1,5 +1,5 @@
-import authHook from "../../hooks/authHook";
-import { AuthContext } from "../../hooks/authHook";
+import authHook from "../hooks/authHook";
+import { AuthContext } from "../hooks/authHook";
 
 const AuthProvider = ({children}:{children:JSX.Element}) => {
 

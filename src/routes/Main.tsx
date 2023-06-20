@@ -16,8 +16,8 @@ const User = () => <Text>USER SIDE</Text>
 
 const DrawerInside = ({props,context}:{props:DrawerContentComponentProps,context:AuthContextProps}) => {
 
-    const {navigate,getState}:NavigationProp<{guest:undefined,user:undefined}> = useNavigation();
-    const currentRouteName = getState().routeNames[getState().index];
+    const { navigate } = props.navigation
+    const currentRouteName = props.navigation.getState().routeNames[props.navigation.getState().index]
 
     const UserView = () => 
         (context.authState.isLoggedIn)
@@ -79,6 +79,7 @@ const Main = () => {
 
     return(
         <Drawer.Navigator
+            initialRouteName="guest"
             drawerContent={(props) => <DrawerInside props={props} context={context} />}
         >
             <Drawer.Screen name="guest" component={Guest} />
