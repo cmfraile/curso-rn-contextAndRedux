@@ -1,31 +1,14 @@
-import { createContext } from "react"
+import authHook from "../../hooks/authHook";
 
-export interface authState {
-    isLoggedIn:boolean,
-    userName:string|undefined
-}
+const AuthProvider = ({children}:{children:JSX.Element}) => {
 
-export interface AuthContextProps {
-    authState:authState,
-    signIn:() => void
-}
+    const { AuthContext , ...restAuthHook } = authHook();
 
-const authInitialState:authState = {
-    isLoggedIn:false , 
-    userName:undefined
-}
-
-const AuthContext = createContext( {} as AuthContextProps )
-
-export const AuthProvider = ({children}:{children:JSX.Element}) => {
-    return (
-    <AuthContext.Provider value={{
-        authState:authInitialState,
-        signIn:() => {}
-    }}>
-        {children}
-    </AuthContext.Provider>
+    return(
+        <AuthContext.Provider value={{...restAuthHook}}>
+            {children}
+        </AuthContext.Provider>
     )
 }
 
-export { authInitialState , AuthContext }
+export default AuthProvider
