@@ -12,6 +12,8 @@
   "dependencies": {
     "@react-navigation/drawer": "^6.6.2",
     "@react-navigation/native": "^6.1.6",
+    "@reduxjs/toolkit": "^1.9.5",
+    "@types/react-redux": "^7.1.25",
     "react": "18.2.0",
     "react-native": "0.71.11",
     "react-native-gesture-handler": "^2.12.0",
