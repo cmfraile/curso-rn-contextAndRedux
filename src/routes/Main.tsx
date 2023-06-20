@@ -1,5 +1,5 @@
 import { DrawerContentScrollView , createDrawerNavigator , DrawerItem, DrawerContentComponentProps } from "@react-navigation/drawer";
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { NavigationContainer, useNavigation, useRoute } from "@react-navigation/native";
 import { useContext } from "react";
 import { Text , View } from "react-native";
 import 'react-native-gesture-handler';
@@ -16,7 +16,8 @@ const User = () => <Text>USER SIDE</Text>
 
 const DrawerInside = ({props,context}:{props:DrawerContentComponentProps,context:AuthContextProps}) => {
 
-    const {navigate}:NavigationProp<{guest:undefined,user:undefined}> = useNavigation()
+    const {navigate,getState}:NavigationProp<{guest:undefined,user:undefined}> = useNavigation();
+    const currentRouteName = getState().routeNames[getState().index];
 
     const UserView = () => 
         (context.authState.isLoggedIn)
@@ -38,7 +39,7 @@ const DrawerInside = ({props,context}:{props:DrawerContentComponentProps,context
             />
         :   <DrawerItem
                 style={{backgroundColor:'blue'}}
-                onPress={() => context.signIn()}
+                onPress={() => { context.signIn() ; navigate('user') }}
                 label='LOGIN'
             />
     
@@ -47,16 +48,17 @@ const DrawerInside = ({props,context}:{props:DrawerContentComponentProps,context
         return(
             <View>
                 <DrawerItem
+                    style={{backgroundColor:(currentRouteName == 'guest') ? 'blue' : ''}}
                     label='invitados'
                     onPress={() => navigate('guest') }
                 />
                 {(context.authState.isLoggedIn) &&
                     <DrawerItem
+                        style={{backgroundColor:(currentRouteName == 'user') ? 'blue' : ''}}
                         label='usuarios'
                         onPress={() => navigate('user') }
                     />
                 }
-                
             </View>
         )
     }
@@ -77,7 +79,6 @@ const Main = () => {
 
     return(
         <Drawer.Navigator
-            initialRouteName="guest"
             drawerContent={(props) => <DrawerInside props={props} context={context} />}
         >
             <Drawer.Screen name="guest" component={Guest} />
