@@ -1,11 +1,12 @@
 import authHook from "../../hooks/authHook";
+import { AuthContext } from "../../hooks/authHook";
 
 const AuthProvider = ({children}:{children:JSX.Element}) => {
 
-    const { AuthContext , ...restAuthHook } = authHook();
+    const authHookItems = authHook();
 
     return(
-        <AuthContext.Provider value={{...restAuthHook}}>
+        <AuthContext.Provider value={{...authHookItems}}>
             {children}
         </AuthContext.Provider>
     )
