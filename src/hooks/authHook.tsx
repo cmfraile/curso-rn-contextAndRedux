@@ -8,8 +8,17 @@ interface AuthContextProps {
     signIn:() => void
 }
 
-const authReducer = (state:authState,action:any):authState => {
-    return state
+type authAction = { 
+    type : 'signIn'|'logOut'
+    payload : any
+}
+
+const authReducer = (state:authState,{type}:authAction):authState => {
+    switch(type){
+        case 'logOut' : return state ;
+        case 'signIn' : return state ;
+        default : return state ;
+    }
 }
 
 const authHook = () => {
