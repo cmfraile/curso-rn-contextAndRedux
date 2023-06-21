@@ -55,17 +55,17 @@ const authHook = () => {
 
 }
 
-const authHookInRedux = () => {
+export const authHookInRedux = () => {
 
-    const auth = useAppSelector(({auth}) => auth);
+    const authState = useAppSelector(({auth}) => auth);
     const dispatch = useAppDispatch();
 
     const authCRUD = {
-        signIn:() => dispatch(signInThunk),
-        logOut:() => dispatch(authSlice.actions.logout)
+        signIn:() => dispatch(signInThunk()),
+        logOut:() => dispatch(authSlice.actions.logout())
     }
 
-    return({auth,...authCRUD})
+    return({authState,...authCRUD})
 
 }
 

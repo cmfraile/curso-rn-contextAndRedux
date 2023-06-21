@@ -9,18 +9,19 @@ const initialState:authState = {isLoggedIn:false}
 import { loginRequestObject } from "../components/fetch";
 import { takeUserObject } from "../components/fetch";
 
-export const signInThunk = createAsyncThunk<user,void>('auth/signIn',async() => {
-    let returned:any = {}
+const promiseAsAsyncThunkPayloadCreator = new Promise<user>(async(rs) => {
     await fetchComponent(loginRequestObject)
     .then(() => {
         fetchComponent(takeUserObject)
         .then( (resp:any) => {
             const [user] = resp.data.filter( (x:user) => x.email == loginRequestObject.body.email );
-            returned = user
+            rs(user)
         })
     });
-    return returned as user;
-});
+})
+
+export const signInThunk = createAsyncThunk<user,void>('auth/signIn',async() => promiseAsAsyncThunkPayloadCreator);
+
 
 const authSlice = createSlice({name:'auth',initialState,
     reducers:{
@@ -35,6 +36,20 @@ const authSlice = createSlice({name:'auth',initialState,
 });
 
 export default authSlice
+
+/*
+export const signInThunk = createAsyncThunk<user,void>('auth/signIn',async() => {
+    let returned:any = {}
+    await fetchComponent(loginRequestObject)
+    .then(() => {
+        fetchComponent(takeUserObject)
+        .then( (resp:any) => {
+            const [user] = resp.data.filter( (x:user) => x.email == loginRequestObject.body.email );
+            returned = user
+        })
+    });
+});
+*/
 
 /*
 import { createSlice } from "@reduxjs/toolkit";
