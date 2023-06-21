@@ -1,3 +1,41 @@
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import fetchComponent from "../components/fetch";
+import { BaseThunkAPI } from "@reduxjs/toolkit/dist/createAsyncThunk";
+
+interface user {id:number;email:string;first_name:string;last_name:string;avatar:string}
+interface authState { isLoggedIn:boolean , user?:user }
+const initialState:authState = {isLoggedIn:false}
+
+import { loginRequestObject } from "../components/fetch";
+import { takeUserObject } from "../components/fetch";
+
+export const signInThunk = createAsyncThunk<user,void>('auth/signIn',async() => {
+    let returned:any = {}
+    await fetchComponent(loginRequestObject)
+    .then(() => {
+        fetchComponent(takeUserObject)
+        .then( (resp:any) => {
+            const [user] = resp.data.filter( (x:user) => x.email == loginRequestObject.body.email );
+            returned = user
+        })
+    });
+    return returned as user;
+});
+
+const authSlice = createSlice({name:'auth',initialState,
+    reducers:{
+        logout:(state:authState) => ({isLoggedIn:false})
+    },
+    extraReducers:(builder) => {
+        builder.addCase(signInThunk.fulfilled,(state,action) => ({
+            isLoggedIn:true,
+            user:action.payload
+        }))
+    },
+});
+
+export default authSlice
+
 /*
 import { createSlice } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit";

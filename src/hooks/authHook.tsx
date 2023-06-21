@@ -1,6 +1,8 @@
 import { createContext } from "react";
 import { useReducer } from "react";
 import fetchComponent, { loginRequestObject, takeUserObject } from "../components/fetch";
+import { useAppDispatch, useAppSelector } from "../store/Auth.redux";
+import authSlice, { signInThunk } from "../store/auth.slice";
 
 interface user {id:number;email:string;first_name:string;last_name:string;avatar:string}
 interface authState { isLoggedIn:boolean , user?:user }
@@ -50,6 +52,20 @@ const authHook = () => {
     }
 
     return({authState,...authCRUD});
+
+}
+
+const authHookInRedux = () => {
+
+    const auth = useAppSelector(({auth}) => auth);
+    const dispatch = useAppDispatch();
+
+    const authCRUD = {
+        signIn:() => dispatch(signInThunk),
+        logOut:() => dispatch(authSlice.actions.logout)
+    }
+
+    return({auth,...authCRUD})
 
 }
 
